@@ -4,7 +4,7 @@
 # against bad commits.
 
 name: build
-on: [pull_request, push, workflow_dispatch]
+on: [push, workflow_dispatch]
 
 jobs:
   build:
@@ -23,8 +23,11 @@ jobs:
         run: chmod +x ./gradlew
       - name: build
         run: ./gradlew build
-      - name: capture build artifacts
-        uses: actions/upload-artifact@v4
+      - name: Cache build outputs
+        uses: actions/cache@v4
         with:
-          name: BuildResult
-          path: build/libs/
+          path: |
+            **/build
+          key: ${{ runner.os }}-build-${{ github.sha }}
+          restore-keys: |
+            ${{ runner.os }}-build-
