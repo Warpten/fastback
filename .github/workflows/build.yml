@@ -31,3 +31,8 @@ jobs:
           key: ${{ runner.os }}-build-${{ github.sha }}
           restore-keys: |
             ${{ runner.os }}-build-
+      - name: Capture build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: BuildResult
+          path: **/build
